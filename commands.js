@@ -71,10 +71,7 @@ exports.insertParagraph = function (state, dispatch, view) {
   var fragment = Fragment.from([parentForm, PARAGRAPH])
   var grandparentForm = $cursor.node(-2)
   if (!grandparentForm) return false
-  var grandparentContent = grandparentForm.content
-  for (var index = 0; index < grandparentContent.size; index++) {
-    if (fragment.child(index).eq(parentForm)) break
-  }
+  var index = $cursor.index(-2)
   var canInsert = grandparentForm.canReplace(index, index, fragment)
   if (!canInsert) return false
   if (dispatch) {
