@@ -9,6 +9,8 @@ module.exports = function (schema) {
         markToggleMenuItem(schema.marks.definition, 'Definition'),
         markToggleMenuItem(schema.marks.use, 'Use'),
         markToggleMenuItem(schema.marks.reference, 'Reference'),
+      ],
+      [
         new menu.MenuItem({
           title: 'Insert Blank',
           label: 'Blank',
