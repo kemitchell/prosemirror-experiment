@@ -1,20 +1,15 @@
 var pmCommands = require('prosemirror-commands')
+var pmModel = require('prosemirror-model')
 var pmState = require('prosemirror-state')
 
 var TextSelection = pmState.TextSelection
+var Fragment = pmModel.Fragment
 
 var schema = require('./schema')
 
-var HEADING = schema.node('heading', null, [
-  schema.text('New Heading')
-])
-
-var FORM = schema.node('form', null, [
-  HEADING,
-  schema.node('paragraph', null, [
-    schema.text('...')
-  ])
-])
+var HEADING = schema.node('heading', null, [schema.text('New Heading')])
+var PARAGRAPH = schema.node('paragraph', null, [schema.text('...')])
+var FORM = schema.node('form', null, [HEADING, PARAGRAPH])
 
 exports.insertBlank = function (state, dispatch) {
   var blank = schema.nodes.blank
@@ -71,10 +66,44 @@ exports.insertSibling = function (state, dispatch, view) {
   return true
 }
 
+exports.insertParagraph = function (state, dispatch, view) {
+  var $cursor = state.selection.$cursor
+  if (!$cursor) return false
+  var parentForm = $cursor.node(-1)
+  var fragment = Fragment.from([parentForm, PARAGRAPH])
+  var grandparentForm = $cursor.node(-2)
+  var grandparentContent = grandparentForm.content
+  for (var index = 0; index < grandparentContent.size; index++) {
+    if (fragment.child(index).eq(parentForm)) break
+  }
+  var canInsert = grandparentForm.canReplace(index, index, fragment)
+  if (!canInsert) return false
+  if (dispatch) {
+    var tr = state.tr
+    var position = $cursor.after(-1)
+    tr.insert(position, PARAGRAPH)
+    tr.setSelection(
+      TextSelection.create(
+        tr.doc, position + 1,
+        position + 1 + PARAGRAPH.child(0).nodeSize
+      )
+    )
+    tr.scrollIntoView()
+    dispatch(tr)
+  }
+  return true
+}
+
 exports.insertHeading = function (state, dispatch, view) {
   var $cursor = state.selection.$cursor
   if (!$cursor) return false
   if (!view.endOfTextblock('left')) return false
+  var parent = $cursor.parent
+  if (parent.type.name === 'heading') return false
+  var grandparent = $cursor.node(-1)
+  var canPrependHeading = grandparent.canReplace(0, 0, schema.nodes.heading)
+  if (!canPrependHeading) return false
+  if (grandparent.type.name === 'doc') return false
   if (dispatch) {
     var tr = state.tr
     var position = $cursor.before()
