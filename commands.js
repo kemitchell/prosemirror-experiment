@@ -58,6 +58,10 @@ exports.enter = pmCommands.chainCommands(
 
 exports.selectAll = pmCommands.selectAll
 
+exports.definition = pmCommands.toggleMark(schema.marks.definition)
+exports.use = pmCommands.toggleMark(schema.marks.use)
+exports.reference = pmCommands.toggleMark(schema.marks.reference)
+
 function newForm () {
   return Node.fromJSON(schema, {
     type: 'form',
