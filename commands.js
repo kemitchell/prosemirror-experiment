@@ -1,5 +1,10 @@
+var pmModel = require('prosemirror-model')
 var pmCommands = require('prosemirror-commands')
-var Node = require('prosemirror-model').Node
+var pmState = require('prosemirror-state')
+
+var Node = pmModel.Node
+// var Selection = pmState.Selection
+var TextSelection = pmState.TextSelection
 
 var schema = require('./schema')
 
@@ -16,25 +21,44 @@ exports.insertBlank = function (state, dispatch) {
 
 exports.insertChild = function (state, dispatch, view) {
   var $cursor = state.selection.$cursor
-  if (!$cursor || !view.endOfTextblock('forward')) return false
+  if (!$cursor) return false
+  // TODO: Put selected nodes in new child.
   if (dispatch) {
-    dispatch(state.tr.replaceSelectionWith(newForm(schema)))
+    var newChild = newForm()
+    var position = state.selection.$to.after()
+    var tr = state.tr
+    tr.insert(position, newChild)
+    // Select heading in new child.
+    tr.setSelection(
+      TextSelection.create(
+        tr.doc, position + 1,
+        position + 1 + newChild.child(0).nodeSize
+      )
+    )
+    tr.scrollIntoView()
+    dispatch(tr)
   }
   return true
-}
-
-exports.splitParagraph = function (state, dispatch, view) {
-  // TODO
-  return false
 }
 
 exports.insertSibling = function (state, dispatch, view) {
   var $cursor = state.selection.$cursor
   if (!$cursor || !view.endOfTextblock('forward')) return false
+  if ($cursor.depth === 1) return false
   if (dispatch) {
-    dispatch(
-      state.tr.insert(state.selection.$to, newForm(schema))
+    var newChild = newForm()
+    var position = state.selection.$to.after(-1)
+    var tr = state.tr
+    tr.insert(position, newChild)
+    // Select heading in new sibling.
+    tr.setSelection(
+      TextSelection.create(
+        tr.doc, position + 1,
+        position + 1 + newChild.child(0).nodeSize
+      )
     )
+    tr.scrollIntoView()
+    dispatch(tr)
   }
   return true
 }
@@ -51,16 +75,13 @@ exports.delete = pmCommands.chainCommands(
   pmCommands.selectNodeForward
 )
 
-exports.enter = pmCommands.chainCommands(
-  exports.insertSibling,
-  exports.splitParagraph
-)
-
 exports.selectAll = pmCommands.selectAll
 
 exports.definition = pmCommands.toggleMark(schema.marks.definition)
 exports.use = pmCommands.toggleMark(schema.marks.use)
 exports.reference = pmCommands.toggleMark(schema.marks.reference)
+
+var NEW_FORM_HEADING = 'New Heading'
 
 function newForm () {
   return Node.fromJSON(schema, {
@@ -68,12 +89,15 @@ function newForm () {
     content: [
       {
         type: 'heading',
-        content: [{type: 'text', text: 'New Heading'}]
+        content: [textNode(NEW_FORM_HEADING)]
       },
       {
         type: 'paragraph',
-        content: [{type: 'text', text: '...'}]
+        content: [textNode('...')]
       }
     ]
   })
+}
+function textNode (text) {
+  return {type: 'text', text}
 }
