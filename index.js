@@ -27,7 +27,7 @@ var schema = new Schema({
       parseDOM: [{tag: 'section.form'}]
     },
     heading: {
-      content: 'text',
+      content: 'text+',
       isolating: true,
       marks: NO_MARKS,
       toDOM: function () { return ['header', 0] },
