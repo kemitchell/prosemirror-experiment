@@ -56,9 +56,9 @@ var state = EditorState.create({
     keymap({
       'Mod-z': undo,
       'Mod-y': redo,
-      'Mod-d': commands.definition,
-      'Mod-u': commands.use,
-      'Mod-r': commands.reference,
+      'Mod-b': commands.definition,
+      'Mod-i': commands.use,
+      'Mod-u': commands.reference,
       'Mod-h': commands.heading,
       'Enter': commands.insertChild,
       'Mod-Enter': commands.insertSibling,
