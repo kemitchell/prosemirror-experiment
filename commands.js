@@ -34,7 +34,7 @@ exports.insertChild = function (state, dispatch, view) {
     tr.setSelection(
       TextSelection.create(
         tr.doc, position + 1,
-        position + 1 + FORMnewChild.child(0).nodeSize
+        position + 1 + FORM.child(0).nodeSize
       )
     )
     tr.scrollIntoView()
