@@ -104,6 +104,7 @@ var state = EditorState.create({
       'Mod-b': commands.definition,
       'Mod-i': commands.use,
       'Mod-u': commands.reference,
+      'Mod-h': commands.heading,
       'Enter': commands.insertChild,
       'Mod-Enter': commands.insertSibling,
       'Shift-Enter': commands.insertSibling,

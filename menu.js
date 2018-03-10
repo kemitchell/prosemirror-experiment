@@ -19,6 +19,14 @@ module.exports = function (schema) {
             return commands.insertBlank
           },
           run: commands.insertBlank
+        }),
+        new menu.MenuItem({
+          title: 'Insert Heading',
+          label: 'Heading',
+          enable: function (state) {
+            return commands.insertHeading
+          },
+          run: commands.insertHeading
         })
       ],
       [
