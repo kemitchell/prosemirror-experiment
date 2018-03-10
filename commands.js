@@ -34,7 +34,7 @@ exports.insertChild = function (state, dispatch, view) {
     tr.setSelection(
       TextSelection.create(
         tr.doc, position + 1,
-        position + 1 + FORM.child(0).nodeSize
+        position + 1 + FORMnewChild.child(0).nodeSize
       )
     )
     tr.scrollIntoView()
@@ -70,6 +70,7 @@ exports.insertParagraph = function (state, dispatch, view) {
   var parentForm = $cursor.node(-1)
   var fragment = Fragment.from([parentForm, PARAGRAPH])
   var grandparentForm = $cursor.node(-2)
+  if (!grandparentForm) return false
   var grandparentContent = grandparentForm.content
   for (var index = 0; index < grandparentContent.size; index++) {
     if (fragment.child(index).eq(parentForm)) break
