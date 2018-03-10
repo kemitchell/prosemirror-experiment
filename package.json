@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "browserify": "^16.1.1",
+    "exorcist": "^1.0.1",
     "watchify": "^3.11.0"
   },
   "dependencies": {
@@ -18,6 +19,6 @@
   },
   "scripts": {
     "build": "browserify index.js > build/browser.js",
-    "watch": "watchify index.js -o build/browser.js"
+    "watch": "watchify index.js -o 'exorcist build/browser.js.map > build/browser.js' -dv"
   }
 }
