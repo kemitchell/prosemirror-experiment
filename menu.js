@@ -6,27 +6,15 @@ module.exports = function (schema) {
     floating: true,
     content: [
       [
-        // Insert Blank
-        new menu.MenuItem({
-          title: 'Insert Blank',
-          label: 'Blank',
-          enable: function () {
-            return function (state, nodeType) {
-              // TODO
-              return true
-            }
-          },
-          run: function (state, _, view) {
-            // TODO
-          }
-        }),
         markToggleMenuItem(schema.marks.definition, 'Definition'),
         markToggleMenuItem(schema.marks.use, 'Use'),
         markToggleMenuItem(schema.marks.reference, 'Reference'),
         new menu.MenuItem({
           title: 'Insert Blank',
           label: 'Blank',
-          enable: function (state) { return insertBlank(state) },
+          enable: function (state) {
+            return insertBlank(state)
+          },
           run: insertBlank
         })
       ],

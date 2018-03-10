@@ -36,3 +36,10 @@ dfn {
 .use {
   font-style: oblique;
 }
+
+.blank {
+  border-bottom: 1px solid black;
+  display: inline-block;
+  padding: 0;
+  width: 5rem;
+}
