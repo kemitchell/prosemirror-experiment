@@ -93,8 +93,7 @@ var doc = Node.fromJSON(schema, {
           content: [
             {
               type: 'text',
-              text: 'First Child',
-              marks: []
+              text: 'First Child'
             }
           ]
         },
@@ -103,8 +102,7 @@ var doc = Node.fromJSON(schema, {
           content: [
             {
               type: 'text',
-              text: 'First child text.',
-              marks: []
+              text: 'First child text.'
             }
           ]
         }
