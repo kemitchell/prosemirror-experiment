@@ -28,12 +28,14 @@ var schema = new Schema({
     },
     heading: {
       content: 'text',
+      isolating: true,
       marks: NO_MARKS,
       toDOM: function () { return ['header', 0] },
       parseDOM: [{tag: 'header'}]
     },
     paragraph: {
       content: '(text | blank)+',
+      isolating: true,
       marks: ALL_MARKS,
       toDOM: function () { return ['p', 0] },
       parseDOM: [{tag: 'p'}]
