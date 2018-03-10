@@ -3,10 +3,7 @@ var Schema = require('prosemirror-model').Schema
 var NO_MARKS = ''
 var ALL_MARKS = '_'
 
-// Prevent contiguous paragraphs.
-var PARAGRAPH_FIRST = 'paragraph (form+ | form+ paragraph)*'
-var FORM_FIRST = 'form+ (paragraph | paragraph form+)*'
-var FORM_CONTENT = '(' + PARAGRAPH_FIRST + ' | ' + FORM_FIRST + ')'
+var FORM_CONTENT = listContent('form', 'paragraph')
 
 module.exports = new Schema({
   nodes: {
@@ -33,7 +30,7 @@ module.exports = new Schema({
       parseDOM: [{tag: 'header'}]
     },
     paragraph: {
-      content: '(text | blank)+',
+      content: listContent('text', 'blank'),
       marks: ALL_MARKS,
       toDOM: function () { return ['p', 0] },
       parseDOM: [{tag: 'p'}]
@@ -66,3 +63,11 @@ module.exports = new Schema({
     }
   }
 })
+
+function listContent (contiguous, noncontiguous) {
+  var singleton = noncontiguous
+  var series = contiguous + '+'
+  var seriesFirst = `${series} (${singleton} | (${singleton} ${series})+)*`
+  var singletonFirst = `${singleton} (${series} | (${series} ${singleton})+)*`
+  return `(${seriesFirst} | ${singletonFirst})`
+}
