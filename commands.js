@@ -27,15 +27,14 @@ exports.insertChild = function (state, dispatch, view) {
   if (!$cursor) return false
   // TODO: Put selected nodes in new child.
   if (dispatch) {
-    var newChild = FORM
     var position = state.selection.$to.after()
     var tr = state.tr
-    tr.insert(position, newChild)
+    tr.insert(position, FORM)
     // Select heading in new child.
     tr.setSelection(
       TextSelection.create(
         tr.doc, position + 1,
-        position + 1 + newChild.child(0).nodeSize
+        position + 1 + FORM.child(0).nodeSize
       )
     )
     tr.scrollIntoView()
@@ -49,15 +48,14 @@ exports.insertSibling = function (state, dispatch, view) {
   if (!$cursor || !view.endOfTextblock('forward')) return false
   if ($cursor.depth === 1) return false
   if (dispatch) {
-    var newChild = FORM
     var position = state.selection.$to.after(-1)
     var tr = state.tr
-    tr.insert(position, newChild)
+    tr.insert(position, FORM)
     // Select heading in new sibling.
     tr.setSelection(
       TextSelection.create(
         tr.doc, position + 1,
-        position + 1 + newChild.child(0).nodeSize
+        position + 1 + FORM.child(0).nodeSize
       )
     )
     tr.scrollIntoView()
