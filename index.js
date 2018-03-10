@@ -17,76 +17,31 @@ var schema = require('./schema')
 
 var commands = require('./commands')
 
-var doc = Node.fromJSON(schema, {
-  type: 'form',
-  attrs: {conspicuous: false},
-  content: [
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text: 'This is a test.',
-          marks: []
-        }
-      ]
-    },
-    {
-      type: 'form',
-      attrs: {conspicuous: false},
-      content: [
-        {
-          type: 'heading',
-          content: [
-            {
-              type: 'text',
-              text: 'First Child'
-            }
-          ]
-        },
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: 'First child text.'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      type: 'form',
-      attrs: {conspicuous: false},
-      content: [
-        {
-          type: 'heading',
-          content: [
-            {
-              type: 'text',
-              text: 'Second Child',
-              marks: []
-            }
-          ]
-        },
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: 'Second child text.',
-              marks: []
-            }
-          ]
-        }
-      ]
-    }
-  ]
-})
+var INITIAL_DOC = schema.node('doc', null, [
+  schema.node('paragraph', null, [
+    schema.text('This is a test.')
+  ]),
+  schema.node('form', {conspicuous: false}, [
+    schema.node('heading', null, [
+      schema.text('First Child')
+    ]),
+    schema.node('paragraph', null, [
+      schema.text('First child text.')
+    ])
+  ]),
+  schema.node('form', {conspicuous: false}, [
+    schema.node('heading', null, [
+      schema.text('Second Child')
+    ]),
+    schema.node('paragraph', null, [
+      schema.text('First child text.')
+    ])
+  ])
+])
 
 var state = EditorState.create({
   schema,
-  doc,
+  doc: INITIAL_DOC,
   plugins: [
     menu(schema),
     /*
