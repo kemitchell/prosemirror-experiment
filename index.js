@@ -1,6 +1,5 @@
 var EditorState = require('prosemirror-state').EditorState
 var EditorView = require('prosemirror-view').EditorView
-var Node = require('prosemirror-model').Node
 var pmCommands = require('prosemirror-commands')
 var dropCursor = require('prosemirror-dropcursor').dropCursor
 var gapCursor = require('prosemirror-gapcursor').gapCursor
@@ -8,9 +7,6 @@ var history = require('prosemirror-history').history
 var keymap = require('prosemirror-keymap').keymap
 var redo = require('prosemirror-history').redo
 var undo = require('prosemirror-history').undo
-
-var toggleMark = pmCommands.toggleMark
-// var inputRules = require('prosemirror-inputrules')
 
 var menu = require('./menu')
 var schema = require('./schema')
@@ -44,15 +40,8 @@ var state = EditorState.create({
   doc: INITIAL_DOC,
   plugins: [
     menu(schema),
-    /*
-    inputRules.inputRules({
-      rules: [
-        new inputRules.InputRule(/[^\x20-\x7E]$/, '')
-      ]
-      // TODO: Input rule to turn underscores into blanks.
-    }),
-    */
     history(),
+    require('./input-rules'),
     keymap({
       'Mod-z': undo,
       'Mod-y': redo,
