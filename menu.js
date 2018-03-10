@@ -1,5 +1,7 @@
-var commands = require('prosemirror-commands')
+var toggleMark = require('prosemirror-commands').toggleMark
 var menu = require('prosemirror-menu')
+
+var commands = require('./commands')
 
 module.exports = function (schema) {
   return menu.menuBar({
@@ -8,16 +10,16 @@ module.exports = function (schema) {
       [
         markToggleMenuItem(schema.marks.definition, 'Definition'),
         markToggleMenuItem(schema.marks.use, 'Use'),
-        markToggleMenuItem(schema.marks.reference, 'Reference'),
+        markToggleMenuItem(schema.marks.reference, 'Reference')
       ],
       [
         new menu.MenuItem({
           title: 'Insert Blank',
           label: 'Blank',
           enable: function (state) {
-            return insertBlank(state)
+            return commands.insertBlank
           },
-          run: insertBlank
+          run: commands.insertBlank
         })
       ],
       [
@@ -26,17 +28,6 @@ module.exports = function (schema) {
       ]
     ]
   })
-
-  function insertBlank (state, dispatch) {
-    var blank = schema.nodes.blank
-    var $from = state.selection.$from
-    var index = $from.index
-    if (!$from.parent.canReplaceWith(index, index, blank)) return false
-    if (dispatch) {
-      dispatch(state.tr.replaceSelectionWith(blank.create()))
-    }
-    return true
-  }
 }
 
 function markToggleMenuItem (mark, title) {
@@ -51,7 +42,7 @@ function markToggleMenuItem (mark, title) {
     enable: function (state) {
       return !state.selection.empty
     },
-    run: commands.toggleMark(mark)
+    run: toggleMark(mark)
   })
 }
 
