@@ -1,0 +1,38 @@
+html {
+  line-height: 140%;
+}
+
+header {
+  font-weight: bold;
+}
+
+
+section {
+  padding-left: 1rem;
+  position: relative;
+}
+
+section:before {
+  content: '§';
+  display: block;
+  left: 0;
+  position: absolute;
+  top: 0;
+  user-select: none;
+}
+
+section section {
+  margin-left: 2rem;
+}
+
+dfn {
+  font-weight: bold;
+}
+
+.reference:before {
+  content: '☞ ';
+}
+
+.use {
+  font-style: oblique;
+}

@@ -4,7 +4,12 @@
     "watchify": "^3.11.0"
   },
   "dependencies": {
+    "prosemirror-commands": "^1.0.5",
     "prosemirror-example-setup": "^1.0.1",
+    "prosemirror-history": "^1.0.1",
+    "prosemirror-inputrules": "^1.0.1",
+    "prosemirror-keymap": "^1.0.1",
+    "prosemirror-menu": "^1.0.4",
     "prosemirror-model": "^1.1.0",
     "prosemirror-schema-basic": "^1.0.0",
     "prosemirror-schema-list": "^1.0.0",
