@@ -5,6 +5,15 @@ var ALL_MARKS = '_'
 
 module.exports = new Schema({
   nodes: {
+    doc: {
+      // Note: The root doc cannot contain a heading.
+      // TODO: Prevent consecutive paragraphs.
+      content: '(paragraph | form)+',
+      toDOM: function () {
+        return ['article', {class: 'form'}, 0]
+      },
+      parseDOM: [{tag: 'article'}]
+    },
     form: {
       content: 'heading? (paragraph | form)+',
       attrs: {conspicuous: {default: false}},
@@ -51,6 +60,5 @@ module.exports = new Schema({
       toDOM: function () { return ['span', {class: 'reference'}] },
       parseDOM: [{tag: 'span.reference'}]
     }
-  },
-  topNode: 'form'
+  }
 })
