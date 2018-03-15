@@ -46,3 +46,7 @@ dfn {
   padding: 0;
   width: 5rem;
 }
+
+.problem {
+  background: 'red';
+}
