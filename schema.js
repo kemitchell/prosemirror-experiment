@@ -24,7 +24,7 @@ module.exports = new Schema({
       parseDOM: [{tag: 'section.form'}]
     },
     heading: {
-      content: 'text+',
+      content: 'text*',
       marks: NO_MARKS,
       toDOM: function () { return ['header', 0] },
       parseDOM: [{tag: 'header'}]
@@ -69,5 +69,5 @@ function listContent (contiguous, noncontiguous) {
   var series = contiguous + '+'
   var seriesFirst = `${series} (${singleton} | (${singleton} ${series})+)*`
   var singletonFirst = `${singleton} (${series} | (${series} ${singleton})+)*`
-  return `(${seriesFirst} | ${singletonFirst})`
+  return `(${seriesFirst} | ${singletonFirst})?`
 }
